@@ -8,9 +8,11 @@
 #include <stdint.h>
 #include <stdatomic.h>
 #include <stdfix.h>
+#include <time.h>
+#include <malloc.h>
 
 /**
- * Prints messages when `-DDEBUG` is added.
+ * @brief Prints messages when `-DDEBUG` is added.
  */
 void debug_printf(const char *format, ...)
 {
@@ -19,11 +21,10 @@ void debug_printf(const char *format, ...)
   va_start(args, format);
   vfprintf(stdout, format, args);
   va_end(args);
-  printf("\n");
 #endif
 }
 /**
- * For `printf`ing to `stderr`.
+ * @brief For `printf`ing to `stderr`.
  */
 void error_printf(const char *format, ...)
 {
@@ -33,27 +34,46 @@ void error_printf(const char *format, ...)
   va_end(args);
 }
 /**
- * Frees a pointer.
- * @param pointer Must be in this format: `(void**)&<pointer-name>`.
+ * @brief Frees a pointer.
+ * @note `pointer` must be in this format: `(void**)&<pointer-name>`.
  */
-void free_pointer(void **pointer)
+void custom_free(void **pointer)
 {
   if (pointer == NULL || *pointer == NULL)
   {
-    debug_printf("Pointer is NULL.");
-    error_printf("Pointer is NULL, cannot free %p.\n", *pointer);
+    debug_printf("%p is NULL.\n", pointer);
+    error_printf("ERROR:\n\t%p = 0x0;\tpointer is NULL.\n", pointer);
     return;
   }
+  debug_printf("DEBUG: Pointer %p will be freed...\n", pointer);
   free(*pointer);
   *pointer = NULL;
+  debug_printf("DEBUG: Value of %p is freed and is set to NULL.\n", pointer);
 }
+/**
+ * @brief Prints a pointer with its contents.
+ */
+void memory_printf(const void *ptr, size_t size)
+{
+  const unsigned char *byte_ptr = (const unsigned char *)ptr;
+  for (size_t i = 0; i < size; ++i)
+  {
+    if (i % 16 == 0)
+    {
+      printf("\n%p: ", (void *)(byte_ptr + i)); // Print address
+    }
+    printf("%02x ", byte_ptr[i]); // Print byte value in hex
+  }
+  printf("\n");
+}
+
 
 int main()
 {
   float *ptr_i = (float *)malloc(1 * sizeof(float));
   *ptr_i = 1.5;
   printf("%g\n", *ptr_i);
-  free_pointer((void **)&ptr_i);
-  
+  custom_free((void **)&ptr_i);
+
   return 0;
 }
