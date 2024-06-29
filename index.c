@@ -43,7 +43,7 @@ void custom_free(void **pointer)
   {
     debug_printf("%p is NULL.\n", pointer);
     error_printf("ERROR:\n\t%p = 0x0;\tpointer is NULL.\n", pointer);
-    return;
+    exit(EXIT_FAILURE);
   }
   debug_printf("DEBUG: Pointer %p will be freed...\n", pointer);
   free(*pointer);
@@ -52,6 +52,8 @@ void custom_free(void **pointer)
 }
 /**
  * @brief Prints a pointer with its contents.
+ * @param ptr Pointer that points to a set of hex values.
+ * @param size Number of bytes to print.
  */
 void memory_printf(const void *ptr, size_t size)
 {
@@ -70,10 +72,12 @@ void memory_printf(const void *ptr, size_t size)
 
 int main()
 {
-  float *ptr_i = (float *)malloc(1 * sizeof(float));
-  *ptr_i = 1.5;
-  printf("%g\n", *ptr_i);
-  custom_free((void **)&ptr_i);
+  char *ptr_1 = (char *)malloc(sizeof(char) * 12);
+  printf("%p\n", ptr_1);
+  for(int i = 0; i < 12; ++i)
+    ptr_1[i] = "Hello World!"[i];
+  printf("%s\n", ptr_1);
+  custom_free((void **)&ptr_1);
 
   return 0;
 }
