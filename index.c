@@ -68,16 +68,27 @@ void memory_printf(const void *ptr, size_t size)
   }
   printf("\n");
 }
-
+/**
+ * @brief Generates a random decimal between 0 (inclusive) and 1 (exclusive).
+ */
+double custom_rand()
+{
+  int rand1 = rand();
+  debug_printf("DEBUG: Randomly generated number: %i.\n", rand1);
+  double rand2 = (double)rand1 / (double)RAND_MAX;
+  debug_printf("DEBUG: Random number from 0 to 1: %.54lf.\n", rand2);
+  return rand2;
+}
 
 int main()
 {
-  char *ptr_1 = (char *)malloc(sizeof(char) * 12);
-  printf("%p\n", ptr_1);
-  for(int i = 0; i < 12; ++i)
-    ptr_1[i] = "Hello World!"[i];
-  printf("%s\n", ptr_1);
-  custom_free((void **)&ptr_1);
+  srand(time(0));
+
+  int size = 5;
+  double *numbers = malloc(sizeof(double) * size);
+  for(int i = 0; i < size; i++)
+    numbers[i] = custom_rand();
+  printf("%.2f\n", numbers[0]);
 
   return 0;
 }
