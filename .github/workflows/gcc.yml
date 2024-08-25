@@ -1,0 +1,21 @@
+name: GCC
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Compile
+      run: gcc -Wall -Wextra -O2 -ffast-math -march=native -std=c99 index.c -o index
+    - name: Run with Time
+      run: time ./index
+    - name: Clean Up
+      run: rm -f index
