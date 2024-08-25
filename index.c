@@ -31,6 +31,17 @@
 
 const char *__digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+/**
+ * A structure used to represent dynamic `String` objects.
+ */
+struct String {
+  char *buffer;
+  size_t size;
+};
+
+/**
+ * A structure used to represent dynamic `Vector` objects.
+ */
 struct Vector {
   void *data;
   size_t size;
@@ -39,12 +50,21 @@ struct Vector {
 };
 
 /**
- * Creates a new Vector with the specified initial capacity and element size.
- *
- * @param initial_capacity The initial capacity of the Vector.
- * @param element_size The size of each element in the Vector.
- *
- * @return A pointer to the newly created Vector, or NULL if memory allocation fails.
+ * A linked list node structure.
+ * 
+ * A `Node` contains a pointer to the next `Node` in the linked list, and a generic pointer to the data stored in the node.
+ */
+struct Node {
+  struct Node *next; /** Pointer to the next `Node` in the linked list. */
+  void *data; /** Generic pointer to the data stored in the `Node`. */
+  struct Node *prev; /** Pointer to the previous `Node` in the linked list. */
+};
+
+/**
+ * Creates a new `Vector` with the specified initial capacity and element size.
+ * @param initial_capacity The initial capacity of the `Vector`.
+ * @param element_size The size of each element in the `Vector`.
+ * @return A pointer to the newly created `Vector`, or `NULL` if memory allocation fails.
  */
 struct Vector *new_Vector(size_t initial_capacity, size_t element_size) {
   struct Vector *vec = (struct Vector *)malloc(sizeof(struct Vector));
@@ -62,12 +82,9 @@ struct Vector *new_Vector(size_t initial_capacity, size_t element_size) {
 }
 
 /**
- * Reserves a new capacity for the given Vector, reallocating memory if necessary.
- *
- * @param vec The Vector to reserve capacity for.
+ * Reserves a new capacity for the given `Vector`, reallocating memory if necessary.
+ * @param vec The `Vector` to reserve capacity for.
  * @param new_capacity The new capacity to reserve.
- *
- * @return None
  */
 void vector_reserve(struct Vector *vec, size_t new_capacity) {
   if (vec->capacity >= new_capacity)
@@ -83,11 +100,8 @@ void vector_reserve(struct Vector *vec, size_t new_capacity) {
 
 /**
  * Appends a new element to the end of the given Vector.
- *
  * @param vec The Vector to append the element to.
  * @param element The element to append to the Vector.
- *
- * @return None
  */
 void vector_push_back(struct Vector *vec, const void *element) {
   if (vec->size == vec->capacity)
@@ -97,25 +111,10 @@ void vector_push_back(struct Vector *vec, const void *element) {
 }
 
 /**
- * @struct Node
- * @brief A linked list node structure.
- *
- * A @c struct Node contains a pointer to the next node in the linked list,
- * and a generic pointer to the data stored in the node.
- *
- * @var next Pointer to the next node in the linked list.
- * @var data Generic pointer to the data stored in the node.
- */
-struct Node {
-  struct Node *next;
-  void *data;
-};
-
-/**
  * Creates a new Node with the given data.
  *
- * @param data The data to be stored in the new Node.
- * @return A pointer to the newly created Node, or NULL if memory allocation fails.
+ * @param data The data to be stored in the new `Node`.
+ * @return A pointer to the newly created `Node`, or `NULL` if memory allocation fails.
  */
 struct Node *new_Node(void *data) {
   struct Node *node = (struct Node *)malloc(sizeof(struct Node));
@@ -128,9 +127,8 @@ struct Node *new_Node(void *data) {
 
 /**
  * Asks the user a question and reads their response from standard input.
- *
  * @param question The question to be asked to the user.
- * @return A dynamically allocated string containing the user's response, or NULL on failure.
+ * @return A dynamically allocated string containing the user's response, or `NULL` on failure.
  */
 char *ask(const char *question) {
   printf("%s", question);
@@ -148,12 +146,9 @@ char *ask(const char *question) {
 
 /**
  * Reverses the elements of an array in-place.
- *
  * @param array Pointer to the array to be reversed.
  * @param size The number of elements in the array.
  * @param element_size The size of each element in bytes.
- *
- * @throws None
  */
 void reverse_array(void *array, size_t size, size_t element_size) {
   char *char_ptr = (char *)array;
@@ -165,6 +160,12 @@ void reverse_array(void *array, size_t size, size_t element_size) {
   }
 }
 
+/**
+ * Converts a positive integer into the destination base's equivalent.
+ * @param num The number to convert from in base 10.
+ * @param base The base to convert to.
+ * @return Either an allocated `"0"` string if `num == 0`, `NULL` if the base does not follow `2 <= base <= 36` or if memory allocation fails, or a string containing the converted number if successful.
+ */
 char *to_base(unsigned int num, unsigned int base) {
   if (num == 0) {
     return strdup("0");
@@ -189,7 +190,7 @@ char *to_base(unsigned int num, unsigned int base) {
 }
 
 /**
- * @brief Prints messages when `-DDEBUG` is added.
+ * Prints messages when `-DDEBUG` is added.
  */
 void debug_printf(const char *format, ...) {
 #ifdef DEBUG
@@ -200,7 +201,7 @@ void debug_printf(const char *format, ...) {
 #endif
 }
 /**
- * @brief For `printf`ing to `stderr`.
+ * For `printf`ing to `stderr`.
  */
 void error_printf(const char *format, ...) {
   va_list args;
@@ -209,8 +210,9 @@ void error_printf(const char *format, ...) {
   va_end(args);
 }
 /**
- * @brief Frees a pointer.
- * @note `pointer` must be in this format: `(void**)&<pointer-name>`.
+ * Frees a pointer.
+ * @param pointer The pointer to be freed.
+ * @note `pointer` **must** be in this format: `(void**)&<pointer-name>`.
  */
 void custom_free(void **pointer) {
   if (pointer == NULL || *pointer == NULL)
@@ -225,7 +227,7 @@ void custom_free(void **pointer) {
   debug_printf("DEBUG: Value of %p is freed and is set to NULL.\n", pointer);
 }
 /**
- * @brief Prints a pointer with its contents.
+ * Prints a pointer with its contents.
  * @param ptr Pointer that points to a set of hex values.
  * @param size Number of bytes to print.
  */
@@ -242,7 +244,7 @@ void memory_printf(const void *ptr, size_t size) {
   printf("\n");
 }
 /**
- * @brief Generates a random decimal between 0 (inclusive) and 1 (exclusive).
+ * Generates a random decimal between 0 (inclusive) and 1 (exclusive).
  */
 double custom_rand() {
   int rand1 = rand();
@@ -253,19 +255,9 @@ double custom_rand() {
 }
 
 /**
- * A structure used to represent dynamic `String` objects.
- */
-struct String {
-  char *buffer;
-  size_t size;
-};
-
-/**
- * Creates a new String object with the specified buffer and length.
- *
+ * Creates a new `String` object with the specified buffer and length.
  * @param buffer The buffer containing the characters of the string.
  * @param length The length of the string.
- *
  * @return A `String` object, or `NULL` if memory allocation fails.
  */
 struct String *new_String(const char *buffer) {
@@ -306,12 +298,9 @@ bool String_append(struct String *str_obj, const char *buffer) {
 }
 
 /**
- * Frees the memory allocated for a String object.
- *
- * @param str_obj Pointer to the String object to be freed.
- *
- * @return `true` if the memory was successfully freed, `false` if the pointer to the
- *         String object is NULL, or if the buffer is already NULL.
+ * Frees the memory allocated for a `String` object.
+ * @param str_obj Pointer to the `String` object to be freed.
+ * @return `true` if the memory was successfully freed, `false` if the pointer to the `String` object is `NULL`, or if the buffer is already `NULL`.
  */
 bool free_String(struct String *str_obj) {
   if (str_obj == NULL) {
@@ -331,12 +320,16 @@ bool free_String(struct String *str_obj) {
 int main() {
   srand(time(0));
 
-  int size = 5;
-  double *numbers = malloc(sizeof(double) * size);
-  for(int i = 0; i < size; i++)
-    numbers[i] = custom_rand();
-  printf("%.2f\n", numbers[0]);
-  free(numbers);
+  struct String *str = new_String("Hello, World!");
+  if (str == NULL) {
+    perror("Failed to allocate memory for String object");
+    return 1;
+  }
+  printf("%s\n", str->buffer);
+  if (!free_String(str)) {
+    perror("Failed to free memory for String object");
+    return 1;
+  }
 
   return 0;
 }

@@ -1,6 +1,6 @@
 CXX = gcc
 DDEBUG ?= 0
-CXXFLAGS = -Wall -g -std=c++17 -O2 -fwhole-program -march=native
+CXXFLAGS = -s -Wall -Wextra -Werror -std=c++17 -O2 -fwhole-program -march=native
 ifeq ($(DDEBUG), 1)
 	CXXFLAGS += -DDEBUG
 endif
