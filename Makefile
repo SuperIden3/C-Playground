@@ -1,11 +1,8 @@
 CXX = gcc
 DDEBUG ?= 0
 CXXFLAGS = -s -Wall -Wextra -Werror -std=c++17 -O2 -fwhole-program -march=native
-ifeq ($(DDEBUG), 1)
-	CXXFLAGS += -DDEBUG
-endif
 TARGET = index
-SRCS = $(TARGET).c
+SRCS = $(TARGET).c $(wildcard custom/*.c)
 OBJS = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)
@@ -13,7 +10,7 @@ $(TARGET): $(OBJS)
 	objdump -d -t -x -r -Mintel -S -C $(TARGET) > objdump.out
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@ -O2 -s
 
 .PHONY: run
 run: $(TARGET)
