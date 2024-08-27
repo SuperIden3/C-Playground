@@ -10,7 +10,7 @@ $(TARGET): $(OBJS)
 	objdump -d -t -x -r -Mintel -S -C $(TARGET) > objdump.out
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -O2 -s
+	$(CXX) $(CXXFLAGS) -c $< -o $@ -O2 -s -fwhole-program -march=native
 
 .PHONY: run
 run: $(TARGET)
