@@ -1,31 +1,20 @@
-CXX = gcc
-DDEBUG ?= 0
-CXXFLAGS = -s -Wall -Wextra -Werror -std=c++17 -O2 -fwhole-program -march=native
+CC = gcc
+CFLAGS = -s -Wall -Wextra -O2 -std=c99 -march=native
+
 TARGET = index
-SRCS = $(TARGET).c $(wildcard custom/*.c)
+
+SRCS = index.c $(wildcard custom/*.c)
 OBJS = $(SRCS:.c=.o)
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
-	objdump -d -t -x -r -Mintel -S -C $(TARGET) > objdump.out
+	$(CC) $(CFLAGS) $(OBJS) -o $@
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -O2 -s -fwhole-program -march=native
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: run
-run: $(TARGET)
-	ulimit -c unlimited
-	./$(TARGET)
-
-.PHONY: debug
-debug: $(TARGET)
-	gdb -q -tui -ex "b _main" -ex "lay src" -ex "run" ./$(TARGET)
-
-.PHONY: time
-time: $(TARGET)
-	ulimit -c unlimited
-	bash -c "time ./$(TARGET)"
-
-.PHONY: clean
 clean:
-	rm -rf $(TARGET) objdump.out $(OBJS) core
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: all clean 
