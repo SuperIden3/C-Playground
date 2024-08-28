@@ -36,7 +36,7 @@ void vector_reserve(struct Vector *vec, size_t new_capacity) {
   vec->capacity = new_capacity;
 }
 
-void vector_push_back(struct Vector *vec, const void *element) {
+void vector_push_back(struct Vector *vec, void *element) {
   if (vec->size == vec->capacity)
     vector_reserve(vec, vec->capacity * 2 + 1);
   memcpy(vec->data + vec->size * vec->element_size, element, vec->element_size);

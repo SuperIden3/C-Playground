@@ -41,7 +41,7 @@ char *to_base(unsigned int num, unsigned int base) {
 void custom_free(void **pointer) {
   if (pointer == NULL || *pointer == NULL)
   {
-    fprintf(stderr, "Pointer (%p) already NULL (or not in this format): %s\n", pointer, strerror(errno));
+    fprintf(stderr, "Pointer (%p) already NULL (or not in this format): %s\n", (void *)pointer, strerror(errno));
     exit(EXIT_FAILURE);
   }
   free(*pointer);

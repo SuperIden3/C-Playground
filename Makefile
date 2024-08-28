@@ -1,5 +1,11 @@
+USE_CLANG ?= 0
+OPT_LEVEL ?= 2
+
 CC = gcc
-CFLAGS = -s -Wall -Wextra -O2 -std=c99 -march=native
+ifeq ($(USE_CLANG), 1)
+	CC = clang
+endif
+CFLAGS = -Wall -Wextra -O$(OPT_LEVEL) -pedantic -march=native
 
 TARGET = index
 
@@ -13,6 +19,15 @@ $(TARGET): $(OBJS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+allow_core:
+	ulimit -c unlimited
+
+run: $(TARGET) allow_core
+	./$(TARGET)
+
+time: $(TARGET) allow_core
+	bash -c "time ./$(TARGET)"
 
 clean:
 	rm -f $(OBJS) $(TARGET)
