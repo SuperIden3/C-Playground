@@ -8,14 +8,12 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Compile
-      run: gcc -Wall -Wextra -O2 -ffast-math -march=native -std=c99 index.c -o index
+      run: make
     - name: Run with Time
-      run: time ./index
+      run: make time
     - name: Clean Up
-      run: rm -f index
+      run: make clean
