@@ -9,7 +9,7 @@ CFLAGS = -Wall -Wextra -O$(OPT_LEVEL) -pedantic -march=native
 
 TARGET = index
 
-SRCS = index.c $(wildcard custom/*.c)
+SRCS = $(TARGET).c $(wildcard custom/*.c)
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
@@ -17,7 +17,7 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-%.o: %.c
+$(OBJS): $(SRCS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 allow_core:
@@ -32,4 +32,4 @@ time: $(TARGET) allow_core
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-.PHONY: all clean 
+.PHONY: all clean allow_core
