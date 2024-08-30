@@ -17,7 +17,7 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-$(OBJS): $(SRCS)
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 allow_core:
