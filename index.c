@@ -33,6 +33,7 @@
 #include "custom/io.h"
 #include "custom/node.h"
 #include "custom/funcs.h"
+#include "custom/matrix.h"
 
 int main() {
   srand(time(0));
