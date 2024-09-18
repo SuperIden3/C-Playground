@@ -31,3 +31,4 @@ bool free_String(struct String *str_obj);
  * @return `true` if successful or `false` if memory reallocation fails for cnocatenation.
  */
 bool String_append(struct String *str_obj, const char *buffer);
+

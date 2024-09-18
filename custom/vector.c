@@ -42,3 +42,4 @@ void vector_push_back(struct Vector *vec, void *element) {
   memcpy(vec->data + vec->size * vec->element_size, element, vec->element_size);
   vec->size++;
 }
+

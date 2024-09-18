@@ -36,3 +36,4 @@ void memory_printf(const void *ptr, size_t size);
  * Generates a random decimal between 0 (inclusive) and 1 (exclusive).
  */
 double custom_rand();
+

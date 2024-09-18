@@ -16,3 +16,4 @@ struct Node {
  * @return A pointer to the newly created `Node`, or `NULL` if memory allocation fails.
  */
 struct Node *new_Node(void *data);
+

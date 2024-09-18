@@ -88,3 +88,4 @@ void free_3DMatrix(struct Matrix3D *matrix) {
     free(matrix->data);
     free(matrix);
 }
+

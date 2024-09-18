@@ -15,3 +15,4 @@ char *ask(const char *question) {
   buffer[strcspn(buffer, "\n")] = '\0';
   return buffer;
 }
+

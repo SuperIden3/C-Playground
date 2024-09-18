@@ -15,3 +15,4 @@ struct Node *new_Node(void *data) {
   node->next = NULL;
   return node;
 }
+

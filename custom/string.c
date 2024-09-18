@@ -53,3 +53,4 @@ bool String_append(struct String *str_obj, const char *buffer) {
   strcat(str_obj->buffer, buffer);
   return true;
 }
+

@@ -66,3 +66,4 @@ double custom_rand() {
   double rand2 = (double)rand1 / (double)RAND_MAX;
   return rand2;
 }
+

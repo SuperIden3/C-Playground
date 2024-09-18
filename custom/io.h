@@ -4,3 +4,4 @@
  * @return A dynamically allocated string containing the user's response, or `NULL` on failure.
  */
 char *ask(const char *question);
+
