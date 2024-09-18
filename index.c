@@ -37,17 +37,16 @@
 
 int main() {
   srand(time(0));
-
   struct String *str = new_String("Hello, World!");
   if (str == NULL) {
     perror("Failed to allocate memory for String object");
-    return 1;
+    return -1;
   }
   printf("%s\n", str->buffer);
   if (!free_String(str)) {
     perror("Failed to free memory for String object");
-    return 1;
+    return -1;
   }
-
   return 0;
 }
+
