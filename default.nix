@@ -3,7 +3,6 @@ let
 in
   pkgs.mkShell {
     buildInputs = with pkgs; [
-      gcc
-      g++
-    ]
+      libgcc
+    ];
   }
